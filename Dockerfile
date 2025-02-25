@@ -1,19 +1,21 @@
-# Mavenのビルド用イメージ（Docker Hub）
-FROM maven:3.8.8-eclipse-temurin-17 AS build
+# 使用するベースイメージを指定
+FROM openjdk:17-slim
 
+# 作業ディレクトリを作成
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src ./src
-RUN mvn clean package -DskipTests
 
-# 実行環境（Red Hat UBI）
-FROM registry.redhat.io/ubi8/openjdk-17
+# アプリケーションのソースコードをコンテナにコピー
+COPY . /app
 
-WORKDIR /app
-USER 185
-COPY --from=build /app/target/*.jar app.jar
-ENV JAVA_OPTS="-Xms512m -Xmx1024m"
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
+# Mavenを使用してアプリケーションをビルド
+# OpenJDK 17のイメージにはmavenがインストールされていないため、インストールを行う場合もあります
+RUN apt-get update && apt-get install -y maven
 
+# Mavenビルドを実行（必要に応じてビルドコマンドを修正）
+RUN mvn clean install
+
+# 実行するJARファイルを指定（ビルド後にJARが作成されると仮定）
+CMD ["java", "-jar", "target/my-app.jar"]
+
+# ポートを開放
 EXPOSE 8080
