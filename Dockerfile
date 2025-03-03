@@ -18,4 +18,4 @@ RUN mvn clean install
 CMD ["java", "-jar", "target/my-app.jar"]
 
 # ポートを開放
-EXPOSE 8080
+EXPOSE 8081
