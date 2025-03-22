@@ -27,7 +27,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # 第2阶段: 运行 JAR，使用更小的 JRE
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=builder /app/target/myapp.jar .
 CMD ["java", "-jar", "myapp.jar"]
