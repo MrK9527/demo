@@ -20,7 +20,7 @@ public class DemoAppApplication {
 class HelloController {
     @GetMapping
     public String hello() {
-        return "Hello, World from Spring Boot!自動更新13";
+        return "Hello, World from Spring Boot!自動更新14";
     }
 }
 
